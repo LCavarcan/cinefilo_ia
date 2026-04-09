@@ -18,7 +18,7 @@ load_dotenv()
 # ---------------------------------------------------------------------------
 # Configuração de página
 # ---------------------------------------------------------------------------
-st.set_page_config(page_title="🎬🎵 Cinéfilo IA", layout="centered")
+st.set_page_config(page_title="🎬 Cinéfilo IA 🎵", layout="centered")
 
 # ---------------------------------------------------------------------------
 # Estilo visual
@@ -483,9 +483,17 @@ for key, default in [
 
 with st.sidebar:
     api_key = os.getenv("GROQ_API_KEY") or st.secrets.get("GROQ_API_KEY", "")
+    tmdb_key = os.getenv("TMDB_API_KEY") or st.secrets.get("TMDB_API_KEY", "")
+
     if not api_key:
         st.error("❌ GROQ_API_KEY não encontrada no .env")
         st.stop()
+    
+    if not tmdb_key:
+        st.error("❌ TMDB_API_KEY não encontrada no .env")
+        st.stop()
+    
+    st.session_state.tmdb_key = tmdb_key
 
     # ── Letterboxd ──────────────────────────────────────────────────────────
     st.markdown("### 🎬 Letterboxd")
@@ -535,16 +543,6 @@ with st.sidebar:
             st.markdown("**🎤 Top 3 artistas (6m)**")
             for a in top3:
                 st.markdown(f"- {a['name']} `{a.get('playcount','?')}` plays")
-
-    st.markdown("---")
-
-    # ── TMDB ────────────────────────────────────────────────────────────────
-    st.markdown("### 🎞️ TMDB (opcional)")
-    st.caption("Enriquece filmes com sinopse, elenco e diretor")
-    tmdb_input = st.text_input("TMDB API Key", type="password", placeholder="sua tmdb key", key="tmdb_input")
-    if tmdb_input:
-        st.session_state.tmdb_key = tmdb_input
-        st.success("✅ TMDB configurado!")
 
     st.markdown("---")
 
@@ -606,7 +604,7 @@ tem_lfm = st.session_state.lastfm_carregado and st.session_state.lastfm_data is 
 st.markdown("""
 <div style="width:100%; text-align:center;">
 <div class="cinema-header">
-    <h1>🎬🎵 Cinéfilo IA</h1>
+    <h1>🎬 Cinéfilo IA 🎵</h1>
     <p>Seu parceiro apaixonado por cinema e música</p>
 </div>
 <div style="text-align:center;"><div style="display:inline-block; height:1px; width:60%; background:linear-gradient(to right, transparent, #f5c518 30%, #f5c518 70%, transparent); margin:0.5rem 0 0.8rem 0;"></div></div>
