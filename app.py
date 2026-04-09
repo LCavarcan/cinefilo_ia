@@ -440,7 +440,7 @@ if "buscador" not in st.session_state:
 # ---------------------------------------------------------------------------
 
 with st.sidebar:
-    api_key = os.getenv("GROQ_API_KEY")
+    api_key = os.getenv("GROQ_API_KEY") or st.secrets.get("GROQ_API_KEY")
 
     if not api_key:
         st.error("❌ GROQ_API_KEY não encontrada no .env")
