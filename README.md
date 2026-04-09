@@ -1,6 +1,6 @@
-# 🎬 Cinéfilo IA
+# 🎬🎵 Cinéfilo IA
 
-Um app interativo feito com **Streamlit + IA** que analisa suas avaliações de filmes e conversa com você como um verdadeiro cinéfilo.
+Um app interativo feito com **Streamlit + IA** que analisa **seus filmes (Letterboxd)** e **seu gosto musical (Last.fm)** — e conversa com você como um verdadeiro crítico cultural.
 
 ---
 
@@ -12,28 +12,72 @@ Um app interativo feito com **Streamlit + IA** que analisa suas avaliações de 
 
 ## 🧠 Sobre o projeto
 
-O **Cinéfilo IA** é um agente conversacional que:
+O **Cinéfilo IA** evoluiu de um analisador de filmes para um **agente cultural completo**.
 
-* Analisa seu histórico de filmes (via CSV do Letterboxd ou similar)
-* Entende seu gosto cinematográfico
-* Responde perguntas sobre seus filmes
-* Traça seu perfil como espectador
-* Faz análises temporais (ex: mês que você mais assistiu filmes)
+Agora ele:
 
-Tudo isso com personalidade - como um amigo que entende MUITO de cinema 🍿
+* 🎬 Analisa seus filmes do Letterboxd
+* 🎵 Analisa seu histórico musical do Last.fm
+* 🔗 Faz conexões entre cinema e música
+* 🧠 Usa IA para interpretar seu gosto
+* 💬 Conversa com contexto e memória
+
+É basicamente um amigo que entende de **cinema + música + cultura pop**.
 
 ---
 
 ## ✨ Funcionalidades
 
-* 📂 Upload de arquivo `ratings.csv`
-* 🎯 Análise de perfil do usuário
-* ⭐ Identificação de filmes favoritos e menos gostados
-* 📊 Estatísticas (média, volume, gêneros)
-* 📅 Análise temporal (filmes por mês)
-* 💬 Chat inteligente com memória de contexto
-* 🔎 Busca semântica com TF-IDF + similaridade de cosseno
-* 🧠 Integração com LLM via Groq
+### 🎬 Filmes (Letterboxd)
+
+* Upload de `ratings.csv`
+* Análise de perfil cinematográfico
+* Top filmes e menos gostados
+* Gêneros mais assistidos
+* Análise temporal (filmes por mês)
+* Enriquecimento com **TMDB (sinopse, elenco, diretor)**
+
+---
+
+### 🎵 Música (Last.fm)
+
+* Conexão via API
+* Top artistas, álbuns e músicas (últimos 6 meses)
+* Músicas curtidas (loved tracks)
+* Histórico recente
+
+---
+
+### 🔀 Integração cultural
+
+* Conexões entre filmes e música
+* Sugestões cruzadas (trilhas, vibes, estilos)
+* Perfil combinado (cinéfilo + melômano)
+
+---
+
+### 🤖 IA Conversacional
+
+* Chat com memória
+* Respostas em streaming (tempo real)
+* Personalidade forte (crítico cultural)
+* Busca inteligente com contexto
+
+---
+
+### 📊 Visualizações
+
+* Distribuição de notas
+* Filmes por ano
+* Métricas rápidas (total, média)
+
+---
+
+### 💾 Extras
+
+* Exportar conversa em Markdown
+* Sugestões clicáveis
+* Interface customizada estilo cinema
 
 ---
 
@@ -41,26 +85,39 @@ Tudo isso com personalidade - como um amigo que entende MUITO de cinema 🍿
 
 O projeto combina:
 
-* RAG (Retrieval-Augmented Generation)
-* TF-IDF + Cosine Similarity para busca de contexto
-* Peso por recência (filmes mais recentes têm mais relevância)
-* LLM (Groq) para geração de respostas naturais
+* **RAG (Retrieval-Augmented Generation)**
+* **TF-IDF + Cosine Similarity**
+* **Peso por recência**
+* **Streaming de resposta (Groq)**
+* **Enriquecimento externo (TMDB)**
+* **Integração com API (Last.fm)**
 
 ---
 
-## 📁 Estrutura esperada do CSV
+## 📁 Estrutura dos dados
 
-O arquivo deve conter pelo menos:
+### 🎬 CSV (Letterboxd)
 
-| Coluna | Descrição      |
-| ------ | -------------- |
-| Name   | Nome do filme  |
-| Rating | Nota atribuída |
+Obrigatório:
 
-Colunas opcionais:
+| Coluna | Descrição     |
+| ------ | ------------- |
+| Name   | Nome do filme |
+| Rating | Nota          |
 
-* Date → usada para análises temporais
-* Genre → usada para análise de gêneros
+Opcional:
+
+* `Date` → análises temporais
+* `Genre` → análise de gêneros
+
+---
+
+### 🎵 Last.fm
+
+Necessário:
+
+* API Key
+* Username
 
 ---
 
@@ -75,21 +132,21 @@ cd cinefilo_ia
 
 ---
 
-### 2. Crie um ambiente virtual
+### 2. Ambiente virtual
 
 ```bash
 python -m venv venv
 ```
 
-Ativar:
+**Ativar:**
 
-**Windows**
+Windows:
 
 ```bash
 venv\Scripts\activate
 ```
 
-**Linux/Mac**
+Linux/Mac:
 
 ```bash
 source venv/bin/activate
@@ -107,10 +164,9 @@ pip install -r requirements.txt
 
 ### 4. Configure o `.env`
 
-Crie um arquivo `.env` na raiz:
-
 ```env
-GROQ_API_KEY=sua_api_key_aqui
+GROQ_API_KEY=sua_api_key
+TMDB_API_KEY=sua_api_key_tmdb
 ```
 
 ---
@@ -125,9 +181,10 @@ streamlit run app.py
 
 ## 🔐 Variáveis de ambiente
 
-| Variável     | Descrição            |
-| ------------ | -------------------- |
-| GROQ_API_KEY | Chave da API da Groq |
+| Variável     | Descrição                     |
+| ------------ | ----------------------------- |
+| GROQ_API_KEY | API da Groq (IA)              |
+| TMDB_API_KEY | API do TMDB (dados de filmes) |
 
 ---
 
@@ -135,10 +192,11 @@ streamlit run app.py
 
 * Python
 * Streamlit
-* Pandas
-* NumPy
+* Pandas / NumPy
 * Scikit-learn
-* Groq API
+* Groq API (LLM)
+* Last.fm API
+* TMDB API
 * TF-IDF
 * Cosine Similarity
 
@@ -146,42 +204,57 @@ streamlit run app.py
 
 ## 💡 Exemplos de perguntas
 
-* "Quais são meus filmes favoritos?"
-* "Qual meu perfil baseado nos filmes?"
-* "Em qual mês eu assisti mais filmes?"
-* "Que tipo de filme eu gosto?"
-* "Quais filmes eu avaliei mal?"
+### 🎬 Filmes
+
+* "Qual meu filme favorito?"
+* "Que mês assisti mais filmes?"
+* "Como você descreveria meu gosto?"
+
+### 🎵 Música
+
+* "Qual meu artista favorito?"
+* "Que músicas eu mais ouvi?"
+* "Me fala sobre meu gosto musical"
+
+### 🔀 Ambos
+
+* "Que trilhas combinam com meus filmes favoritos?"
+* "Que filmes combinam com os artistas que eu ouço?"
+* "Me descreva como pessoa baseado nisso tudo"
 
 ---
 
 ## 🎨 Interface
 
-* Tema escuro com estilo cinematográfico
-* Chat customizado
-* UX focada em conversa fluida
+* Tema escuro cinematográfico
+* UI totalmente customizada
+* Chat estilizado
+* Sugestões interativas
+* Feedback visual em tempo real
 
 ---
 
 ## ⚠️ Observações
 
-* O app depende de um CSV válido
-* A API da Groq é necessária
-* Sem a coluna `Date`, análises temporais não funcionam
+* Letterboxd e Last.fm são opcionais (mas pelo menos um é necessário)
+* TMDB é obrigatório para enriquecimento
+* Sem `Date`, análises temporais não funcionam
 
 ---
 
 ## 📌 Melhorias futuras
 
-* Integração com API do Letterboxd
-* Recomendações externas de filmes
-* Gráficos interativos
-* Sistema de login
+* Recomendações externas automáticas
+* Sistema de usuários/login
+* Dashboard mais avançado
+* Cache inteligente para APIs
+* Integração com Spotify
 
 ---
 
 ## 🤝 Contribuição
 
-Sinta-se à vontade para abrir issues ou pull requests!
+Pull requests são bem-vindos!
 
 ---
 
@@ -193,6 +266,6 @@ MIT
 
 ## 👤 Autor
 
-Feito com 🍿 por Luiza Guimarães Cavarçan
+Feito com 🎬🎵 por Luiza Guimarães Cavarçan
 
 ---
