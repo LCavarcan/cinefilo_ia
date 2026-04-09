@@ -416,7 +416,16 @@ def responder(pergunta: str, buscador: BuscadorContexto, client: Groq) -> str:
         )
         return response.choices[0].message.content
     except Exception as e:
-        return f"⚠️ Erro ao chamar a API: {e}"
+        logger.error(f"Erro ao chamar Groq: {e}")
+
+        # tenta identificar erro HTTP (400 / 500)
+        erro_str = str(e)
+
+        if "400" in erro_str or "500" in erro_str:
+            return "⚠️ Não consegui me comunicar com o Groq no momento. Tenta de novo daqui a pouco."
+
+        # fallback genérico
+        return "⚠️ Ocorreu um erro inesperado ao gerar a resposta."
 
 # ---------------------------------------------------------------------------
 # Session state
